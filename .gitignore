@@ -21,6 +21,8 @@
 *.wx64fsl
 *.wx32fsl
 
+lisp-unit.lisp
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
