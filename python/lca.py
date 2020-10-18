@@ -35,23 +35,3 @@ def get_lca(root, n1, n2):
     for i in range(min(len(path_n1), len(path_n2))):
         if path_n1[i] != path_n2[i]:
             return path_n1[i - 1]
-
-
-def main():
-    root = Node(50)
-    root.left = Node(17)
-    root.left.left = Node(9)
-    root.left.left.right = Node(14)
-    root.left.left.right.left = Node(12)
-    root.left.right = Node(23)
-    root.left.right.left = Node(19)
-    root.right = Node(76)
-    root.right.left = Node(54)
-    root.right.left.right = Node(72)
-    root.right.left.right.left = Node(67)
-
-    print(f"The LCA of 14 and 19 should be 17, and was found to be {get_lca(root, 14, 19)}")
-
-
-if __name__ == '__main__':
-    main()
