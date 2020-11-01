@@ -5,7 +5,26 @@
 class Node:
     def __init__(self, key):
         self.key = key
-        self.left = self.right = None
+        self.children = [None, None]
+
+    def add_child(self, key):
+        self.children.append(Node(key))
+
+    @property
+    def left(self):
+        return self.children[0]
+
+    @property
+    def right(self):
+        return self.children[1]
+
+    @left.setter
+    def left(self, left_child):
+        self.children[0] = left_child
+
+    @right.setter
+    def right(self, right_child):
+        self.children[1] = right_child
 
 
 def get_path(root, n):
