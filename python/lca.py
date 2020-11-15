@@ -5,52 +5,73 @@
 class Node:
     def __init__(self, key):
         self.key = key
-        self.children = [None, None]
+        self._children = [None, None]
 
-    def add_child(self, key):
-        self.children.append(Node(key))
+    def add_child(self, child):
+        if self._children[0] is None:
+            self._children = []
+        if isinstance(child, Node):
+            self._children.append(child)
+        else:
+            self._children.append(Node(child))
+
+    @property
+    def children(self):
+        c = []
+        for child in self._children:
+            if child is not None:
+                c.append(child)
+        return c
 
     @property
     def left(self):
-        return self.children[0]
+        return self._children[0]
 
     @property
     def right(self):
-        return self.children[1]
+        return self._children[1]
 
     @left.setter
     def left(self, left_child):
-        self.children[0] = left_child
+        self._children[0] = left_child
 
     @right.setter
     def right(self, right_child):
-        self.children[1] = right_child
+        self._children[1] = right_child
+
+    def __repr__(self):
+        return f"Node({self.key})"
 
 
-def get_path(root, n):
+def get_path(root, n, depth=0):
     if root is None:
         return None
-    path = []
-    path.append(root.key)
+    current = (root, depth)
     if root.key == n:
-        return path
-    path_left = get_path(root.left, n)
-    path_right = get_path(root.right, n)
-    if path_left is not None:
-        path += path_left
-    elif path_right is not None:
-        path += path_right
-    else:
+        return [[current]]
+    paths = []
+    for child in root.children:
+        sub_paths = get_path(child, n, depth + 1)
+        print(sub_paths)
+        if sub_paths:
+            for p in sub_paths:
+                paths.append(p)
+                paths[-1].insert(0, current)
+    if len(paths) == 0:
         return None
-    return path
+    return paths
 
 
 def get_lca(root, n1, n2):
-    path_n1 = get_path(root, n1)
-    path_n2 = get_path(root, n2)
-    if path_n1 is None or path_n2 is None:
+    paths_n1 = get_path(root, n1)
+    paths_n2 = get_path(root, n2)
+    print(paths_n1)
+    print(paths_n2)
+    if paths_n1 is None or paths_n2 is None:
         return None
 
+    path_n1 = paths_n1[0]
+    path_n2 = paths_n2[0]
     for i in range(min(len(path_n1), len(path_n2))):
         if path_n1[i] != path_n2[i]:
             return path_n1[i - 1]
